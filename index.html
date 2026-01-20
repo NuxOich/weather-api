@@ -3,11 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>weather-dashboard</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to weather-dashboard</h1>
+    <div class="weather-app">
+        <div class="search-box">
+            <input type="text" id="city-input" placeholder="Введите город...">
+            <button id="search-btn">🔍</button>
+        </div>
+
+    <div class="weather-info hidden" id="weather-info">
+        <h2 id="city-name">London, GB</h2>
+        <div class="temp-box">
+            <span id="temp">25</span> °C
+        </div>
+        <p id="description">Broken Clouds</p>
+
+        <div class="details">
+            <div class="col">
+                <span>💧</span>
+                <p> Влажность: <span id="humidity">50</span> %</p>
+            </div>
+            <div class="col">
+                <span>💨</span>
+                <p> Ветер: <span id="wind">3.5</span> м/с</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
     <script src="src/script.js"></script>
 </body>
 </html>
