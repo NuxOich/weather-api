@@ -13,16 +13,31 @@ const tempDisplay = document.getElementById('temp');
 const descDisplay = document.getElementById('description');
 const humidityDisplay = document.getElementById('humidity');
 const windDisplay = document.getElementById('wind');
+const weatherIcon = document.getElementById('weather-icon');
 
 // Функция Отрисовки
 function displayWeather(data) {
-    weatherInfo.classList.remove('hidden');
-    
+    // 1. Заполняем данными (пока скрыто)
     cityName.innerText = `${data.name}, ${data.sys.country}`;
     tempDisplay.innerText = Math.round(data.main.temp);
     descDisplay.innerText = `${data.weather[0].description}`.charAt(0).toUpperCase() + `${data.weather[0].description}`.slice(1);
     humidityDisplay.innerText = data.main.humidity;
     windDisplay.innerText = data.wind.speed;
+    weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`; // Советую @4x для четкости
+
+    // 2. СБРОС (Reset)
+    // Убираем класс active (делаем прозрачным)
+    weatherInfo.classList.remove('active'); 
+    
+    // Убираем скрытие (блок появляется в DOM, но он прозрачный из-за отсутствия active)
+    weatherInfo.classList.remove('hidden');
+
+    // 3. МАГИЯ ЗАПУСКА (setTimeout)
+    // Даем браузеру крошечную паузу, чтобы он "понял", что блок теперь display: flex.
+    // Без этой паузы он попытается сделать всё сразу и анимации не будет.
+    setTimeout(() => {
+        weatherInfo.classList.add('active');
+    }, 50);
 } 
 
 // Функция запроса (Async/Await)
@@ -42,6 +57,9 @@ async function getWeather(city) {
         // Превращаем ответ сервера из текста в JSON-объект
         const data = await response.json();
 
+        // Сохраняем город в память браузера
+        localStorage.setItem('lastCity', city);
+
         // Пока просто выведем в консоль, чтобы убедиться, что работает
         console.log("Данные от сервера:", data);
         // Взываем функцию отрисовки (которую ты напишешь ниже)
@@ -59,4 +77,15 @@ searchBtn.addEventListener('click', () => {
     const inputCity = cityInput.value;
     // cityInput.value = "";
     getWeather(inputCity);
-})
+});
+
+// При загрузке страницы проверяем память
+document.addEventListener('DOMContentLoaded', () => {
+    const lastCity = localStorage.getItem('lastCity');
+
+    if (lastCity) {
+        // Если в памяти что-то было, сразу ищем погоду
+        getWeather(lastCity);
+        cityInput.value = lastCity;
+    }
+});

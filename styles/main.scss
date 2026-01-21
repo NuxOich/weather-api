@@ -12,7 +12,7 @@ body {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none !important;
 }
 
 .weather-app {
@@ -95,10 +95,42 @@ body {
         justify-content: center;
         gap: 15px;
 
+        // 1. Начальное состояние (Невидимое)
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        // 2. Класс для активации (Видимое)
+        &.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
         & .temp-box {
             font-size: 1.3rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.4);
             
+        }
+
+        & img#weather-icon {
+            // 1. Фиксируем размеры (чтобы верстка не скакала при загрузке)
+            width: 100px;
+            height: 100px;
+
+            // 2. Убираем искажения пропорций
+            object-fit: contain;
+
+            // 3. Улучшаем качество и визуал
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3)); // Мягкая тень для объема
+            // Опционально: если картинка всё равно мыльная, можно попробовать:
+            image-rendering: -webkit-optimize-contrast;
+
+            // Анимация появления (чтобы не моргала при смене города)
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.1) rotate(5deg);
+            }
         }
         & > p {
             font-size: 1.3rem;

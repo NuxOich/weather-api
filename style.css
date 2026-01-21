@@ -328,7 +328,7 @@ body {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none !important;
 }
 
 .weather-app {
@@ -403,10 +403,28 @@ body {
   padding-left: 10px;
   justify-content: center;
   gap: 15px;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.weather-app .weather-info.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 .weather-app .weather-info .temp-box {
   font-size: 1.3rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+.weather-app .weather-info img#weather-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+  image-rendering: -webkit-optimize-contrast;
+  transition: transform 0.3s ease;
+}
+.weather-app .weather-info img#weather-icon:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 .weather-app .weather-info > p {
   font-size: 1.3rem;
